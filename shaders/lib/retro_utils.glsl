@@ -26,3 +26,7 @@ vec2 crtCurve(vec2 uv) {
     uv = uv * 0.5 + 0.5;
     return uv;
 }
+
+float rand(vec2 co) {
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}

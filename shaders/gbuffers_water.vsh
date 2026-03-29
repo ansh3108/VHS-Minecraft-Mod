@@ -7,7 +7,7 @@ out vec4 glcolor;
 void main() {
     vec4 viewPos = gl_ModelViewMatrix * gl_Vertex;
     
-    float snapGrid = 80.0;
+    float snapGrid = 120.0;
     viewPos.xyz = floor(viewPos.xyz * snapGrid) / snapGrid;
     
     gl_Position = gl_ProjectionMatrix * viewPos;
