@@ -7,17 +7,18 @@ uniform sampler2D lightmap;
 in vec2 texcoord;
 in vec2 lmcoord;
 in vec4 glcolor;
+in float vW;
 
-/* RENDERTARGETS: 0 */
 layout(location = 0) out vec4 color;
 
 void main() {
-    vec4 albedo = texture(gtexture, texcoord) * glcolor;
-    albedo *= texture(lightmap, lmcoord);
+    vec2 affineUV = texcoord / vW;
+    vec4 albedo = texture(gtexture, affineUV) * glcolor;
+    
+    vec2 ditherPos = gl_FragCoord.xy;
+    float threshold = getBayer8(ditherPos);
+    
+    if (0.5 < threshold) discard;
 
-    float threshold = getBayer(gl_FragCoord.xy);
-    if (albedo.a < threshold) discard;
-
-    albedo.rgb = posterizeVec3(albedo.rgb, 16.0);
-    color = vec4(albedo.rgb, 1.0);
+    color = vec4(posterize(albedo.rgb, 12.0), 1.0);
 }
